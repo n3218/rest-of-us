@@ -11,13 +11,14 @@ import Terms from "./components/Terms"
 import Home from "./components/Home"
 import CreatePost from "./components/CreatePost"
 import Post from "./components/Post"
+import FlashMessage from "./components/FlashMessage"
 
 const Main = () => {
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("restOfUsToken")))
   const [flashMessages, setFlashMessages] = useState([])
 
   const addFlashMessage = msg => {
-    setFlashMessages(sprev => prev.concat(msg))
+    setFlashMessages(prev => prev.concat(msg))
   }
 
   return (
