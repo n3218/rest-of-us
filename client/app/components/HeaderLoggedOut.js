@@ -8,7 +8,7 @@ const HeaderLoggedOut = ({ setLoggedIn }) => {
   const loginSubmitHandler = async e => {
     e.preventDefault()
     try {
-      const response = await Axios.post("http://localhost:8080/login", { username, password })
+      const response = await Axios.post("/login", { username, password })
       if (response.data) {
         setLoggedIn(true)
         localStorage.setItem("restOfUsToken", response.data.token)
@@ -29,10 +29,10 @@ const HeaderLoggedOut = ({ setLoggedIn }) => {
     <form className="mb-0 pt-2 pt-md-0" onSubmit={loginSubmitHandler}>
       <div className="row align-items-center">
         <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-          <input value={username} onChange={e => setUsername(e.target.value)} name="username" className="form-control form-control-sm input-dark" type="text" placeholder="Username" autoComplete="off" />
+          <input onChange={e => setUsername(e.target.value)} name="username" className="form-control form-control-sm input-dark" type="text" placeholder="Username" autoComplete="off" />
         </div>
         <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-          <input value={password} onChange={e => setPassword(e.target.value)} name="password" className="form-control form-control-sm input-dark" type="password" placeholder="Password" />
+          <input onChange={e => setPassword(e.target.value)} name="password" className="form-control form-control-sm input-dark" type="password" placeholder="Password" />
         </div>
         <div className="col-md-auto">
           <button className="btn btn-light btn-sm">Sign In</button>

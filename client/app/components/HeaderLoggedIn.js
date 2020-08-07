@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 const HeaderLoggedIn = ({ setLoggedIn }) => {
   const logoutHandler = () => {
@@ -16,15 +17,15 @@ const HeaderLoggedIn = ({ setLoggedIn }) => {
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>
-      <a href="#" className="mr-2">
-        <img className="small-header-avatar" src={localStorage.getItem("restOfUsAvatar")} />
-      </a>
-      <a className="btn btn-sm btn-light mr-2" href="/create-post">
+      <Link className="btn btn-sm btn-light mr-2" to="/create-post">
         Create Post
-      </a>
+      </Link>
       <button onClick={logoutHandler} className="btn btn-sm btn-light">
         Log Out
       </button>
+      <a href="#" className="mr-2">
+        <img className="small-header-avatar" src={localStorage.getItem("restOfUsAvatar")} />
+      </a>
     </div>
   )
 }
