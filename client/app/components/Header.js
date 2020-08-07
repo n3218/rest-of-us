@@ -1,6 +1,8 @@
 import React from "react"
+import HeaderLoggedOut from "./HeaderLoggedOut"
+import HeaderLoggedIn from "./HeaderLoggedIn"
 
-const Header = () => {
+const Header = ({ loggedIn, setLoggedIn }) => {
   return (
     <>
       <header className="header-bar bg-info mb-3">
@@ -10,19 +12,7 @@ const Header = () => {
               SocialNetApp
             </a>
           </h4>
-          <form className="mb-0 pt-2 pt-md-0">
-            <div className="row align-items-center">
-              <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-                <input name="username" className="form-control form-control-sm input-dark" type="text" placeholder="Username" autocomplete="off" />
-              </div>
-              <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-                <input name="password" className="form-control form-control-sm input-dark" type="password" placeholder="Password" />
-              </div>
-              <div className="col-md-auto">
-                <button className="btn btn-light btn-sm">Sign In</button>
-              </div>
-            </div>
-          </form>
+          {loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
         </div>
       </header>
     </>

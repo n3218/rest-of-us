@@ -507,9 +507,9 @@ textarea.tall-textarea {
 }
 
 .small-header-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
 }
 
 .custom-tooltip {
