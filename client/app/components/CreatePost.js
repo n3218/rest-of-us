@@ -1,9 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Page from "./Page"
 import Axios from "axios"
 import { withRouter } from "react-router-dom"
+import DispatchContext from "../DispatchContext"
 
 const CreatePost = props => {
+  const dispatch = useContext(DispatchContext)
+
   const [title, setTitle] = useState()
   const [body, setBody] = useState()
 
@@ -12,7 +15,7 @@ const CreatePost = props => {
     try {
       const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("restOfUsToken") })
       console.log("New post has been created")
-      props.addFlashMessage("Your post was successfully created!")
+      dispatch({ type: "flashMessage", value: "Your post was successfully created!" })
       props.history.push(`/post/${response.data}`)
     } catch (err) {
       console.log(err.response.data)

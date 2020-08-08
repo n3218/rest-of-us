@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useContext } from "react"
 import HeaderLoggedOut from "./HeaderLoggedOut"
 import HeaderLoggedIn from "./HeaderLoggedIn"
+import StateContext from "../StateContext"
 
-const Header = ({ loggedIn, setLoggedIn }) => {
+const Header = () => {
+  const state = useContext(StateContext)
   return (
     <>
       <header className="header-bar bg-info mb-3">
@@ -12,7 +14,7 @@ const Header = ({ loggedIn, setLoggedIn }) => {
               SocialNetApp
             </a>
           </h4>
-          {loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
+          {state.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
         </div>
       </header>
     </>

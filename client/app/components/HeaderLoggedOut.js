@@ -1,7 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Axios from "axios"
+import DispatchContext from "../DispatchContext"
 
-const HeaderLoggedOut = ({ setLoggedIn }) => {
+const HeaderLoggedOut = () => {
+  const dispatch = useContext(DispatchContext)
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
 
@@ -10,12 +12,10 @@ const HeaderLoggedOut = ({ setLoggedIn }) => {
     try {
       const response = await Axios.post("/login", { username, password })
       if (response.data) {
-        setLoggedIn(true)
+        dispatch({ type: "login" })
         localStorage.setItem("restOfUsToken", response.data.token)
         localStorage.setItem("restOfUsUsername", response.data.username)
         localStorage.setItem("restOfUsAvatar", response.data.avatar)
-
-        console.log(response.data)
         console.log(username + " user successfully logged in")
       } else {
         console.log("Incorrect username / password")
