@@ -1,8 +1,9 @@
-import React, { useState, useReducer } from "react"
+import React, { useState, useReducer, useEffect } from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Axios from "axios"
 Axios.defaults.baseURL = "http://localhost:8080"
+import { useImmerReducer } from "use-immer"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import HomeGuest from "./components/HomeGuest"
@@ -14,24 +15,44 @@ import Post from "./components/Post"
 import FlashMessage from "./components/FlashMessage"
 import StateContext from "./StateContext"
 import DispatchContext from "./DispatchContext"
+import Profile from "./components/Profile"
 
 const Main = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("restOfUsToken")),
-    flashMessages: []
-  }
-  const appReducer = (state, action) => {
-    switch (action.type) {
-      case "login":
-        return { loggedIn: true, flashMessages: state.flashMessages }
-      case "logout":
-        return { loggedIn: false, flashMessages: state.flashMessages }
-      case "flashMessage":
-        return { loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value) }
+    flashMessages: [],
+    user: {
+      token: localStorage.getItem("restOfUsToken"),
+      username: localStorage.getItem("restOfUsUsername"),
+      avatar: localStorage.getItem("restOfUsAvatar")
     }
   }
-  const [state, dispatch] = useReducer(appReducer, initialState)
-  console.log(state)
+  const appReducer = (draft, action) => {
+    switch (action.type) {
+      case "login":
+        draft.loggedIn = true
+        draft.user = action.data
+        return
+      case "logout":
+        draft.loggedIn = false
+        return
+      case "flashMessage":
+        draft.flashMessages.push(action.value)
+        return
+    }
+  }
+  const [state, dispatch] = useImmerReducer(appReducer, initialState)
+  useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("restOfUsToken", state.user.token)
+      localStorage.setItem("restOfUsUsername", state.user.username)
+      localStorage.setItem("restOfUsAvatar", state.user.avatar)
+    } else {
+      localStorage.removeItem("restOfUsToken")
+      localStorage.removeItem("restOfUsUsername")
+      localStorage.removeItem("restOfUsAvatar")
+    }
+  }, [state.loggedIn])
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
@@ -41,6 +62,9 @@ const Main = () => {
           <Switch>
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
+            </Route>
+            <Route path="/profile/:username">
+              <Profile />
             </Route>
             <Route path="/create-post">
               <CreatePost />

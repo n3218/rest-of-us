@@ -1,14 +1,13 @@
 import React, { useContext } from "react"
 import { Link } from "react-router-dom"
 import DispatchContext from "../DispatchContext"
+import StateContext from "../StateContext"
 
 const HeaderLoggedIn = () => {
   const dispatch = useContext(DispatchContext)
+  const state = useContext(StateContext)
   const logoutHandler = () => {
     dispatch({ type: "logout" })
-    localStorage.removeItem("restOfUsToken")
-    localStorage.removeItem("restOfUsUsername")
-    localStorage.removeItem("restOfUsAvatar")
   }
   return (
     <div className="flex-row my-3 my-md-0">
@@ -25,9 +24,9 @@ const HeaderLoggedIn = () => {
       <button onClick={logoutHandler} className="btn btn-sm btn-light">
         Log Out
       </button>
-      <a href="#" className="mr-2">
-        <img className="small-header-avatar" src={localStorage.getItem("restOfUsAvatar")} />
-      </a>
+      <Link to={`/profile/${state.user.username}`} className="mr-2">
+        <img className="small-header-avatar" src={state.user.avatar} />
+      </Link>
     </div>
   )
 }

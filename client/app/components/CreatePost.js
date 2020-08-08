@@ -1,25 +1,30 @@
 import React, { useState, useContext } from "react"
 import Page from "./Page"
 import Axios from "axios"
-import { withRouter } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 import DispatchContext from "../DispatchContext"
+import StateContext from "../StateContext"
 
-const CreatePost = props => {
+const CreatePost = () => {
   const dispatch = useContext(DispatchContext)
-
+  const state = useContext(StateContext)
   const [title, setTitle] = useState()
   const [body, setBody] = useState()
+  const [wasSuccessfull, setWasSuccessfull] = useState(false)
 
   const submitHandler = async e => {
     e.preventDefault()
     try {
-      const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("restOfUsToken") })
-      console.log("New post has been created")
-      dispatch({ type: "flashMessage", value: "Your post was successfully created!" })
-      props.history.push(`/post/${response.data}`)
+      const response = await Axios.post("/create-post", { title, body, token: state.user.token })
+      setWasSuccessfull(response.data)
     } catch (err) {
       console.log(err.response.data)
     }
+  }
+
+  if (wasSuccessfull) {
+    dispatch({ type: "flashMessage", value: "Your post was successfully created!" })
+    return <Redirect to={`/post/${wasSuccessfull}`} />
   }
   return (
     <Page title="Create New Post">
@@ -44,4 +49,4 @@ const CreatePost = props => {
   )
 }
 
-export default withRouter(CreatePost)
+export default CreatePost
