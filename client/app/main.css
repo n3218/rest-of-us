@@ -2,8 +2,26 @@ body {
   font-family: "Public Sans", sans-serif;
 }
 
-a {
-  color: #ff5733;
+.bg-dark {
+  background-color: #2b2d42 !important;
+  color: white;
+}
+.bg-dark:hover {
+  color: #edf2f4;
+}
+.bg-info {
+  background-color: #8d99ae !important;
+}
+.btn-info {
+  background-color: #ef233c !important;
+  border: transparent !important;
+}
+.btn-info:hover {
+  background-color: #d80032 !important;
+}
+.alert-success {
+  color: #2b2d42;
+  padding: 20px 40px;
 }
 
 .header-bar {

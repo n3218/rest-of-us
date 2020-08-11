@@ -2,12 +2,12 @@ import React, { useEffect, useContext, useState } from "react"
 import Page from "./Page"
 import { useParams } from "react-router-dom"
 import Axios from "axios"
-import StateContext from "../StateContext"
 import ProfilePosts from "./ProfilePosts"
+import StateContext from "../StateContext"
 
 const Profile = () => {
   const { username } = useParams()
-  const state = useContext(StateContext)
+  const appState = useContext(StateContext)
   const [profileData, setProfileData] = useState({
     profileUsername: "...",
     profileAvatar: "https://gravatar.com/avatar/placeholder?s=128",
@@ -19,7 +19,7 @@ const Profile = () => {
     const myRequest = Axios.CancelToken.source()
     const fetchData = async () => {
       try {
-        const response = await Axios.post(`/profile/${username}`, { token: state.user.token }, { cancelToken: myRequest.token })
+        const response = await Axios.post(`/profile/${username}`, { token: appState.user.token }, { cancelToken: myRequest.token })
         setProfileData(response.data)
       } catch (err) {
         console.log(err.response.data)

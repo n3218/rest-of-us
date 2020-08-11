@@ -6,8 +6,8 @@ import DispatchContext from "../DispatchContext"
 import StateContext from "../StateContext"
 
 const CreatePost = () => {
-  const dispatch = useContext(DispatchContext)
-  const state = useContext(StateContext)
+  const appDispatch = useContext(DispatchContext)
+  const appState = useContext(StateContext)
   const [title, setTitle] = useState()
   const [body, setBody] = useState()
   const [wasSuccessfull, setWasSuccessfull] = useState(false)
@@ -15,7 +15,7 @@ const CreatePost = () => {
   const submitHandler = async e => {
     e.preventDefault()
     try {
-      const response = await Axios.post("/create-post", { title, body, token: state.user.token })
+      const response = await Axios.post("/create-post", { title, body, token: appState.user.token })
       setWasSuccessfull(response.data)
     } catch (err) {
       console.log(err.response.data)
@@ -23,7 +23,7 @@ const CreatePost = () => {
   }
 
   if (wasSuccessfull) {
-    dispatch({ type: "flashMessage", value: "Your post was successfully created!" })
+    appDispatch({ type: "flashMessage", value: "Your post was successfully created!" })
     return <Redirect to={`/post/${wasSuccessfull}`} />
   }
   return (

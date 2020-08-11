@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import Page from "./Page"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, withRouter } from "react-router-dom"
 import Axios from "axios"
 import Loader from "./Loader"
+import ReactMarkdown from "react-markdown"
+import NotFound from "./NotFound"
+import StateContext from "../StateContext"
+import DispatchContext from "../DispatchContext"
 
-const Post = () => {
+const Post = props => {
+  const appState = useContext(StateContext)
+  const appDispatch = useContext(DispatchContext)
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [post, setPost] = useState()
@@ -27,6 +33,10 @@ const Post = () => {
     }
   }, [])
 
+  if (!isLoading && !post) {
+    return <NotFound />
+  }
+
   if (isLoading)
     return (
       <Page title="...">
@@ -34,35 +44,54 @@ const Post = () => {
       </Page>
     )
 
+  const isOwner = () => {
+    if (appState.loggedIn) {
+      return appState.user.username === post.author.username
+    }
+    return false
+  }
+  const deleteHandler = async () => {
+    const areYouSure = window.confirm("Do you really want to delete this post?")
+    if (areYouSure) {
+      try {
+        const response = await Axios.delete(`/post/${id}`, { data: { token: appState.user.token } })
+        if (response.data == "Success") {
+          appDispatch({ type: "flashMessage", value: "Your post was successfully deleted." })
+          props.history.push(`/profile/${appState.user.username}`)
+        }
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    }
+  }
+
   return (
     <Page title={post.title}>
-      <div className="d-flex justify-content-end">
-        <span className="pt-2">
-          <a href="#" className="text-dark mr-2" title="Edit">
-            <i className="fas fa-edit"></i>
-          </a>
-          <a className="delete-post-button text-danger" title="Delete">
-            <i className="fas fa-trash"></i>
-          </a>
-        </span>
-      </div>
+      {isOwner() && (
+        <div className="d-flex justify-content-end">
+          <span className="pt-3">
+            <Link to={`/post/${id}/edit`} className="text-dark mr-2" title="Edit">
+              <i className="fas fa-edit"></i>
+            </Link>{" "}
+            <a onClick={deleteHandler} to={`/post/${id}/delete`} className="delete-post-button text-danger" title="Delete">
+              <i className="fas fa-trash"></i>
+            </a>
+          </span>
+        </div>
+      )}
 
       <p className="text-muted small mb-4">
-        <Link to={`/profile/${post.author.username}`}>
+        <Link to={`/profile/${post.author.username}`} title={post.author.username}>
           <img className="avatar-small" src={post.author.avatar} alt={post.author.username} />
         </Link>
         Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {new Date(post.createdDate).toLocaleString()}
       </p>
 
       <div className="body-content">
-        {post.body}
-        <p>
-          Lorem ipsum dolor sit <strong>example</strong> post adipisicing elit. Iure ea at esse, tempore qui possimus soluta impedit natus voluptate, sapiente saepe modi est pariatur. Aut voluptatibus aspernatur fugiat asperiores at.
-        </p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quod asperiores corrupti omnis qui, placeat neque modi, dignissimos, ab exercitationem eligendi culpa explicabo nulla tempora rem? Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ea at esse, tempore qui possimus soluta impedit natus voluptate, sapiente saepe modi est pariatur. Aut voluptatibus aspernatur fugiat asperiores at.</p>
+        <ReactMarkdown source={post.body} />
       </div>
     </Page>
   )
 }
 
-export default Post
+export default withRouter(Post)

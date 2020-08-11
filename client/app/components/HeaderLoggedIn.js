@@ -4,10 +4,10 @@ import DispatchContext from "../DispatchContext"
 import StateContext from "../StateContext"
 
 const HeaderLoggedIn = () => {
-  const dispatch = useContext(DispatchContext)
-  const state = useContext(StateContext)
+  const appDispatch = useContext(DispatchContext)
+  const appState = useContext(StateContext)
   const logoutHandler = () => {
-    dispatch({ type: "logout" })
+    appDispatch({ type: "logout" })
   }
   return (
     <div className="flex-row my-3 my-md-0">
@@ -21,11 +21,11 @@ const HeaderLoggedIn = () => {
       <Link className="btn btn-sm btn-light mr-2" to="/create-post">
         Create Post
       </Link>
-      <button onClick={logoutHandler} className="btn btn-sm btn-light">
+      <button onClick={logoutHandler} className="btn btn-sm bg-dark">
         Log Out
       </button>
-      <Link to={`/profile/${state.user.username}`} className="mr-2">
-        <img className="small-header-avatar" src={state.user.avatar} />
+      <Link to={`/profile/${appState.user.username}`} className="mr-2">
+        <img className="small-header-avatar" src={appState.user.avatar} />
       </Link>
     </div>
   )

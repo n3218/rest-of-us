@@ -4,7 +4,7 @@ import HeaderLoggedIn from "./HeaderLoggedIn"
 import StateContext from "../StateContext"
 
 const Header = () => {
-  const state = useContext(StateContext)
+  const appState = useContext(StateContext)
   return (
     <>
       <header className="header-bar bg-info mb-3">
@@ -14,7 +14,7 @@ const Header = () => {
               SocialNetApp
             </a>
           </h4>
-          {state.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+          {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
         </div>
       </header>
     </>

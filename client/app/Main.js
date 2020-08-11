@@ -16,6 +16,8 @@ import FlashMessage from "./components/FlashMessage"
 import StateContext from "./StateContext"
 import DispatchContext from "./DispatchContext"
 import Profile from "./components/Profile"
+import EditPost from "./components/EditPost"
+import NotFound from "./components/NotFound"
 
 const Main = () => {
   const initialState = {
@@ -27,7 +29,7 @@ const Main = () => {
       avatar: localStorage.getItem("restOfUsAvatar")
     }
   }
-  const appReducer = (draft, action) => {
+  const mainReducer = (draft, action) => {
     switch (action.type) {
       case "login":
         draft.loggedIn = true
@@ -41,7 +43,8 @@ const Main = () => {
         return
     }
   }
-  const [state, dispatch] = useImmerReducer(appReducer, initialState)
+  const [state, dispatch] = useImmerReducer(mainReducer, initialState)
+
   useEffect(() => {
     if (state.loggedIn) {
       localStorage.setItem("restOfUsToken", state.user.token)
@@ -69,14 +72,20 @@ const Main = () => {
             <Route path="/create-post">
               <CreatePost />
             </Route>
-            <Route path="/post/:id">
+            <Route path="/post/:id" exact>
               <Post />
+            </Route>
+            <Route path="/post/:id/edit">
+              <EditPost />
             </Route>
             <Route path="/about">
               <About />
             </Route>
             <Route path="/terms">
               <Terms />
+            </Route>
+            <Route>
+              <NotFound />
             </Route>
           </Switch>
           <Footer />

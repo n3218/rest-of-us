@@ -3,7 +3,7 @@ import Axios from "axios"
 import DispatchContext from "../DispatchContext"
 
 const HeaderLoggedOut = () => {
-  const dispatch = useContext(DispatchContext)
+  const appDispatch = useContext(DispatchContext)
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
 
@@ -12,7 +12,7 @@ const HeaderLoggedOut = () => {
     try {
       const response = await Axios.post("/login", { username, password })
       if (response.data) {
-        dispatch({ type: "login", data: response.data })
+        appDispatch({ type: "login", data: response.data })
 
         console.log(username + " user successfully logged in")
       } else {
