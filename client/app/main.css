@@ -1,13 +1,19 @@
 body {
   font-family: "Public Sans", sans-serif;
 }
-
+* {
+  box-shadow: none !important;
+}
 .bg-dark {
   background-color: #2b2d42 !important;
   color: white;
 }
 .bg-dark:hover {
   color: #edf2f4;
+}
+.list-group-item.active {
+  background-color: #d80032 !important;
+  border: transparent !important;
 }
 .bg-info {
   background-color: #8d99ae !important;
@@ -222,7 +228,7 @@ textarea.tall-textarea {
 
 .search-overlay-enter {
   opacity: 0;
-  transform: scale(1.3);
+  transform: scale(2);
 }
 
 .search-overlay-enter-active {
@@ -238,12 +244,12 @@ textarea.tall-textarea {
 
 .search-overlay-exit-active {
   opacity: 0;
-  transform: scale(1.3);
+  transform: scale(2);
   transition: 0.33s visibility ease-in-out, 0.33s opacity ease-in-out, 0.33s transform ease-in-out;
 }
 
 .search-overlay-icon {
-  color: #007bff;
+  color: #ef233c;
   font-size: 1.4rem;
   margin: 0;
   margin-right: 10px;
@@ -255,7 +261,7 @@ textarea.tall-textarea {
   font-size: 1.1rem;
   outline: none;
   flex: 1;
-  color: #007bff;
+  color: #ef233c;
 }
 
 .live-search-results {
@@ -278,7 +284,7 @@ textarea.tall-textarea {
   position: relative;
   display: flex;
   align-items: center;
-  padding-top: 15px;
+  padding-top: 25px;
   padding-bottom: 15px;
 }
 
@@ -287,24 +293,24 @@ textarea.tall-textarea {
 }
 
 .close-live-search {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  opacity: 0.75;
+  opacity: 0.5;
   line-height: 1;
-  color: #292929;
+  color: #8d99ae;
 }
 
 @media (min-width: 700px) {
   .live-search-field {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .close-live-search {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .search-overlay-icon {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 }
 
@@ -537,7 +543,8 @@ textarea.tall-textarea {
 }
 
 .custom-tooltip {
-  padding: 8px 10px !important;
+  padding: 8px 20px !important;
+  background-color: #2b2d42 !important;
 }
 
 /* Dots Loading Animation */

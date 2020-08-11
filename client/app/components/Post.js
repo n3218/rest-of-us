@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import Page from "./Page"
 import { useParams, Link, withRouter } from "react-router-dom"
+import ReactTooltip from "react-tooltip"
 import Axios from "axios"
 import Loader from "./Loader"
 import ReactMarkdown from "react-markdown"
@@ -70,20 +71,24 @@ const Post = props => {
       {isOwner() && (
         <div className="d-flex justify-content-end">
           <span className="pt-3">
-            <Link to={`/post/${id}/edit`} className="text-dark mr-2" title="Edit">
+            <Link data-for="edit" data-tip="Edit Post" to={`/post/${id}/edit`} className="text-dark mr-2">
               <i className="fas fa-edit"></i>
-            </Link>{" "}
-            <a onClick={deleteHandler} to={`/post/${id}/delete`} className="delete-post-button text-danger" title="Delete">
+            </Link>
+            <ReactTooltip place="bottom" id="edit" className="custom-tooltip" />
+
+            <a data-for="delete" data-tip="Delete Post" onClick={deleteHandler} to={`/post/${id}/delete`} className="delete-post-button text-danger">
               <i className="fas fa-trash"></i>
             </a>
+            <ReactTooltip place="bottom" id="delete" className="custom-tooltip" />
           </span>
         </div>
       )}
 
       <p className="text-muted small mb-4">
-        <Link to={`/profile/${post.author.username}`} title={post.author.username}>
+        <Link data-for="profile" data-tip={`${post.author.username} Profile`} to={`/profile/${post.author.username}`}>
           <img className="avatar-small" src={post.author.avatar} alt={post.author.username} />
         </Link>
+        <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />
         Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {new Date(post.createdDate).toLocaleString()}
       </p>
 
