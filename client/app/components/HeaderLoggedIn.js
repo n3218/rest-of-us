@@ -31,10 +31,10 @@ const HeaderLoggedIn = () => {
       <Link className="btn btn-sm btn-light mr-2" to="/create-post">
         Create Post
       </Link>
-      <button onClick={logoutHandler} className="btn btn-sm bg-dark">
+      <button onClick={logoutHandler} className="btn btn-sm btn-info">
         Log Out
       </button>
-      <Link data-for="profile" data-tip="Profile" to={`/profile/${appState.user.username}`} className="mr-2">
+      <Link data-for="profile" data-tip="My Profile" to={`/profile/${appState.user.username}`} className="mr-2">
         <img className="small-header-avatar" src={appState.user.avatar} />
       </Link>
       <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />

@@ -1,16 +1,35 @@
 body {
   font-family: "Public Sans", sans-serif;
 }
-* {
-  box-shadow: none !important;
+
+a {
+  color: #d80032;
 }
-.bg-dark {
+.btn {
+  padding: 7px 20px !important;
+  border: transparent !important;
+}
+.btn-danger {
+  background-color: #d80032 !important;
+}
+.btn-danger:hover {
+  background-color: #ef233c !important;
+}
+.btn-primary {
+  background-color: #577399 !important;
+}
+.btn-primary:hover {
+  background-color: #718aad !important;
+}
+.btn-info {
   background-color: #2b2d42 !important;
-  color: white;
-}
-.bg-dark:hover {
   color: #edf2f4;
 }
+.btn-info:hover {
+  background-color: #383b56 !important;
+  color: white;
+}
+
 .list-group-item.active {
   background-color: #d80032 !important;
   border: transparent !important;
@@ -18,13 +37,7 @@ body {
 .bg-info {
   background-color: #8d99ae !important;
 }
-.btn-info {
-  background-color: #ef233c !important;
-  border: transparent !important;
-}
-.btn-info:hover {
-  background-color: #d80032 !important;
-}
+
 .alert-success {
   color: #2b2d42;
   padding: 20px 40px;
@@ -80,6 +93,7 @@ body {
 .avatar-profile {
   width: 128px;
   height: 128px;
+  border-radius: 64px;
 }
 
 .form-control-title {
@@ -100,7 +114,7 @@ body {
 }
 
 .input-dark {
-  background-color: #444 !important;
+  background-color: #2b2d42 !important;
   border-color: transparent;
   color: #ffffff;
 }
@@ -223,7 +237,7 @@ textarea.tall-textarea {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(215, 215, 215, 0.911);
+  background-color: rgba(237, 242, 244, 0.8);
 }
 
 .search-overlay-enter {
@@ -261,7 +275,7 @@ textarea.tall-textarea {
   font-size: 1.1rem;
   outline: none;
   flex: 1;
-  color: #ef233c;
+  color: #2b2d42;
 }
 
 .live-search-results {

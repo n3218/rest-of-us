@@ -78,6 +78,7 @@ const EditPost = props => {
   }
 
   const [state, dispatch] = useImmerReducer(editPostReducer, initialState)
+
   useEffect(() => {
     const myRequest = Axios.CancelToken.source()
     const fetchPost = async () => {
@@ -166,7 +167,7 @@ const EditPost = props => {
           {state.body.hasErrors && <div className="alert alert-danger small liveValidateMessage">{state.body.message}</div>}
         </div>
 
-        <button className="btn btn-info" disabled={state.isSaving}>
+        <button className="btn btn-danger" disabled={state.isSaving}>
           {state.isSaving ? "Saving..." : "Save Updates"}
         </button>
       </form>

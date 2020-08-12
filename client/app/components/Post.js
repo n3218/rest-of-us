@@ -32,7 +32,7 @@ const Post = props => {
     return () => {
       myRequest.cancel("Operation cancelled")
     }
-  }, [])
+  }, [id])
 
   if (!isLoading && !post) {
     return <NotFound />
@@ -70,8 +70,8 @@ const Post = props => {
     <Page title={post.title}>
       {isOwner() && (
         <div className="d-flex justify-content-end">
-          <span className="pt-3">
-            <Link data-for="edit" data-tip="Edit Post" to={`/post/${id}/edit`} className="text-dark mr-2">
+          <span>
+            <Link data-for="edit" data-tip="Edit Post" to={`/post/${id}/edit`} className="text-dark mr-3">
               <i className="fas fa-edit"></i>
             </Link>
             <ReactTooltip place="bottom" id="edit" className="custom-tooltip" />
@@ -84,9 +84,9 @@ const Post = props => {
         </div>
       )}
 
-      <p className="text-muted small mb-4">
+      <p className="text-muted small mb-4 mt-4">
         <Link data-for="profile" data-tip={`${post.author.username} Profile`} to={`/profile/${post.author.username}`}>
-          <img className="avatar-small" src={post.author.avatar} alt={post.author.username} />
+          <img className="avatar-small mr-3" src={post.author.avatar} alt={post.author.username} />
         </Link>
         <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />
         Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {new Date(post.createdDate).toLocaleString()}

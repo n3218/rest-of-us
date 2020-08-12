@@ -1,13 +1,61 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../DispatchContext"
+import { useImmer } from "use-immer"
+import Axios from "axios"
+import { PostInList } from "./ListOfPosts"
 
 const Search = () => {
   const appDispatch = useContext(DispatchContext)
+
+  const [state, setState] = useImmer({
+    searchTerm: "",
+    results: [],
+    show: "neither",
+    requestCount: 0
+  })
 
   useEffect(() => {
     document.addEventListener("keyup", escKeyPressHandler)
     return () => document.removeEventListener("keyup", escKeyPressHandler)
   }, [])
+
+  useEffect(() => {
+    if (state.searchTerm.trim()) {
+      setState(draft => {
+        draft.show = "loading"
+      })
+      const delay = setTimeout(() => {
+        setState(draft => {
+          draft.requestCount++
+        })
+      }, 700)
+      return () => clearTimeout(delay)
+    } else {
+      setState(draft => {
+        draft.show = "neither"
+      })
+    }
+  }, [state.searchTerm])
+
+  useEffect(() => {
+    if (state.requestCount) {
+      const searchRequest = Axios.CancelToken.source()
+      const fetchResults = async () => {
+        try {
+          const response = await Axios.post(`/search`, { searchTerm: state.searchTerm }, { cancelToken: searchRequest.token })
+          setState(draft => {
+            draft.results = response.data
+            draft.show = "results"
+          })
+        } catch (err) {
+          console.log("There was a problem or request was cancelled")
+          console.log(err)
+        }
+      }
+      fetchResults()
+      return () => searchRequest.cancel()
+    }
+  }, [state.requestCount])
 
   const escKeyPressHandler = e => {
     if (e.keyCode == 27) {
@@ -20,6 +68,13 @@ const Search = () => {
     appDispatch({ type: "closeSearch" })
   }
 
+  const searchHandler = e => {
+    const val = e.target.value
+    setState(draft => {
+      draft.searchTerm = val
+    })
+  }
+
   return (
     <div className="search-overlay">
       <div className="search-overlay-top shadow-sm">
@@ -27,7 +82,7 @@ const Search = () => {
           <label htmlFor="live-search-field" className="search-overlay-icon">
             <i className="fas fa-search"></i>
           </label>
-          <input autoFocus type="text" autoComplete="off" id="live-search-field" className="live-search-field" placeholder="What are you interested in?" />
+          <input onChange={searchHandler} autoFocus type="text" autoComplete="off" id="live-search-field" className="live-search-field" placeholder="What are you interested in?" />
           <span className="close-live-search" onClick={closeSearchHandler}>
             <i className="fas fa-times-circle"></i>
           </span>
@@ -36,24 +91,20 @@ const Search = () => {
 
       <div className="search-overlay-bottom">
         <div className="container container--narrow py-3">
-          <div className="live-search-results live-search-results--visible">
-            <div className="list-group shadow-sm">
-              <div className="list-group-item active">
-                <strong>Search Results</strong> (3 items found)
+          <div className={"circle-loader " + (state.show == "loading" ? "circle-loader--visible" : "")}></div>
+          <div className={"live-search-results" + (state.show == "results" ? "live-search-results--visible" : "")}>
+            {Boolean(state.results.length) ? (
+              <div className="list-group shadow-sm" onClick={() => appDispatch({ type: "closeSearch" })}>
+                <div className="list-group-item active">
+                  <strong>Search Results</strong> ({state.results.length} {state.results.length === 1 ? "item" : "items"} found)
+                </div>
+                {state.results.map(post => (
+                  <PostInList key={post._id} post={post} by={true} />
+                ))}
               </div>
-              <a href="#" className="list-group-item list-group-item-action">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128" /> <strong>Example Post #1</strong>
-                <span className="text-muted small">by brad on 2/10/2020 </span>
-              </a>
-              <a href="#" className="list-group-item list-group-item-action">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" /> <strong>Example Post #2</strong>
-                <span className="text-muted small">by barksalot on 2/10/2020 </span>
-              </a>
-              <a href="#" className="list-group-item list-group-item-action">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128" /> <strong>Example Post #3</strong>
-                <span className="text-muted small">by brad on 2/10/2020 </span>
-              </a>
-            </div>
+            ) : (
+              <p className="alert alert-danger text-center shadow-sm">Sorry, we could not find any results for this search.</p>
+            )}
           </div>
         </div>
       </div>
