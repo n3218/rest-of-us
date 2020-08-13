@@ -20,6 +20,7 @@ import Profile from "./components/Profile"
 import EditPost from "./components/EditPost"
 import NotFound from "./components/NotFound"
 import Search from "./components/Search"
+import Chat from "./components/Chat"
 
 const Main = () => {
   const initialState = {
@@ -30,7 +31,9 @@ const Main = () => {
       username: localStorage.getItem("restOfUsUsername"),
       avatar: localStorage.getItem("restOfUsAvatar")
     },
-    isSearchOpen: false
+    isSearchOpen: false,
+    isChatOpen: false,
+    unreadChatCount: 0
   }
   const mainReducer = (draft, action) => {
     switch (action.type) {
@@ -49,6 +52,18 @@ const Main = () => {
         return
       case "closeSearch":
         draft.isSearchOpen = false
+        return
+      case "toggleChat":
+        draft.isChatOpen = !draft.isChatOpen
+        return
+      case "closeChat":
+        draft.isChatOpen = false
+        return
+      case "incrementUnreadChatCount":
+        draft.unreadChatCount++
+        return
+      case "clearUnreadChatCount":
+        draft.unreadChatCount = 0
         return
     }
   }
@@ -101,7 +116,7 @@ const Main = () => {
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
             <Search />
           </CSSTransition>
-
+          {state.isChatOpen ? <Chat /> : null}
           <Footer />
         </Router>
       </DispatchContext.Provider>

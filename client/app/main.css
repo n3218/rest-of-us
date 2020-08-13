@@ -9,13 +9,15 @@ a {
   padding: 7px 20px !important;
   border: transparent !important;
 }
-.btn-danger {
+.btn-danger,
+.bg-danger {
   background-color: #d80032 !important;
 }
 .btn-danger:hover {
   background-color: #ef233c !important;
 }
-.btn-primary {
+.btn-primary,
+.bg-primary {
   background-color: #577399 !important;
 }
 .btn-primary:hover {
@@ -30,12 +32,13 @@ a {
   color: white;
 }
 
+.bg-info {
+  background-color: #8d99ae !important;
+}
+
 .list-group-item.active {
   background-color: #d80032 !important;
   border: transparent !important;
-}
-.bg-info {
-  background-color: #8d99ae !important;
 }
 
 .alert-success {
@@ -441,7 +444,7 @@ textarea.tall-textarea {
   text-align: right;
   padding: 4px 7px;
   border-radius: 12px;
-  background-color: #007bff;
+  /* background-color: #007bff; */
   color: #fff;
 }
 

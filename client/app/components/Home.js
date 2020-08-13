@@ -51,17 +51,15 @@ const Home = () => {
           <h2 className="text-center mb-4">The Latest From Those You Follow</h2>
           <div className="list-group">
             {state.feed.map(post => (
-              <>
-                <Link to={`/post/${post._id}`} href="#" className="list-group-item list-group-item-action pt-4 pb-4">
-                  <img className="avatar-small mr-3" src={post.author.avatar} />
-                  <span className="h5">{post.title}</span>
-                  <span className="text-muted small ml-3">
-                    {`by ${post.author.username} `} {new Date(post.createdDate).toLocaleString()}{" "}
-                  </span>
-                  <div>{post.body.slice(0, 400)}...</div>
-                  <div className="text-right">Read more &#8618;</div>
-                </Link>
-              </>
+              <Link key={post._id} to={`/post/${post._id}`} href="#" className="list-group-item list-group-item-action pt-4 pb-4">
+                <img className="avatar-small mr-3" src={post.author.avatar} />
+                <span className="h5">{post.title}</span>
+                <span className="text-muted small ml-3">
+                  {`by ${post.author.username} `} {new Date(post.createdDate).toLocaleString()}{" "}
+                </span>
+                <div>{post.body.slice(0, 400)}...</div>
+                <div className="text-right">Read more &#8618;</div>
+              </Link>
             ))}
           </div>
         </>
