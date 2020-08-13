@@ -84,13 +84,13 @@ const Post = props => {
         </div>
       )}
 
-      <p className="text-muted small mb-4 mt-4">
+      <div className="text-muted small mb-4 mt-4">
         <Link data-for="profile" data-tip={`${post.author.username} Profile`} to={`/profile/${post.author.username}`}>
           <img className="avatar-small mr-3" src={post.author.avatar} alt={post.author.username} />
         </Link>
         <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />
         Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {new Date(post.createdDate).toLocaleString()}
-      </p>
+      </div>
 
       <div className="body-content">
         <ReactMarkdown source={post.body} />
