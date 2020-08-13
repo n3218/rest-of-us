@@ -80,6 +80,27 @@ const Main = () => {
       localStorage.removeItem("restOfUsAvatar")
     }
   }, [state.loggedIn])
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      const searchRequest = Axios.CancelToken.source()
+      const fetchResults = async () => {
+        try {
+          const response = await Axios.post("/checkToken", { token: state.user.token }, { cancelToken: searchRequest.token })
+          if (!response.data) {
+            dispatch({ type: "logout" })
+            dispatch({ type: "flashMessage", value: "Your session has expired. Please login again." })
+          }
+        } catch (err) {
+          console.log("There was a problem or request was cancelled")
+          console.log(err)
+        }
+      }
+      fetchResults()
+      return () => searchRequest.cancel()
+    }
+  }, [])
+
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
