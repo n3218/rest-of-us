@@ -21,11 +21,11 @@ const HeaderLoggedIn = () => {
   return (
     <div className="flex-row my-3 my-md-0">
       <a data-for="search" data-tip="Search" onClick={searchOpenHandler} className="text-white mr-3 header-search-icon">
-        <i className="fas fa-search"></i>
+        <i className="fas fa-search fa-lg"></i>
       </a>
       <ReactTooltip place="bottom" id="search" className="custom-tooltip" />
       <span onClick={() => appDispatch({ type: "toggleChat" })} data-for="chat" data-tip="Chat" className={"mr-3 header-chat-icon " + (appState.unreadChatCount ? "text-danger" : "text-white")}>
-        <i className="fas fa-comment"></i>
+        <i className="fas fa-comment fa-lg"></i>
         {appState.unreadChatCount ? <span className="chat-count-badge text-white">{appState.unreadChatCount < 10 ? appState.unreadChatCount : "9+"}</span> : ""}
       </span>
       <ReactTooltip place="bottom" id="chat" className="custom-tooltip" />
