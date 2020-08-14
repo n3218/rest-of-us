@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { CSSTransition } from "react-transition-group"
 import { useImmerReducer } from "use-immer"
 import Axios from "axios"
-Axios.defaults.baseURL = process.env.BACKENDURL || ""
+Axios.defaults.baseURL = process.env.BACKENDURL || "https://rest-of-us.herokuapp.com"
 
 import Header from "./components/Header"
 import Footer from "./components/Footer"
