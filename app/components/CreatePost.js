@@ -17,15 +17,19 @@ const CreatePost = () => {
     try {
       const response = await Axios.post("/create-post", { title, body, token: appState.user.token })
       setWasSuccessfull(response.data)
+      console.log("wasSuccessfull")
+      console.log(wasSuccessfull)
     } catch (err) {
       console.log(err.response.data)
     }
   }
 
   if (wasSuccessfull) {
+    console.log("If statement, wasSuccessfull = " + wasSuccessfull)
     appDispatch({ type: "flashMessage", value: "Your post was successfully created!" })
     return <Redirect to={`/post/${wasSuccessfull}`} />
   }
+
   return (
     <Page title="Create New Post">
       <form onSubmit={submitHandler}>

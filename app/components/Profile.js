@@ -106,7 +106,7 @@ const Profile = () => {
     })
   }
   return (
-    <Page>
+    <Page title="Profile">
       <h2>
         <img className="avatar-profile mr-3" src={profileData.profileAvatar} /> {profileData.profileUsername}
         {appState.loggedIn && !state.profileData.isFollowing && appState.user.username != state.profileData.profileUsername && state.profileData.profileUsername != "..." && (
