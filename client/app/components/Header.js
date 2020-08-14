@@ -3,8 +3,9 @@ import HeaderLoggedOut from "./HeaderLoggedOut"
 import HeaderLoggedIn from "./HeaderLoggedIn"
 import StateContext from "../StateContext"
 
-const Header = () => {
+const Header = props => {
   const appState = useContext(StateContext)
+  const headerContent = appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />
   return (
     <>
       <header className="header-bar bg-info mb-3">
@@ -14,7 +15,7 @@ const Header = () => {
               SocialNetApp
             </a>
           </h4>
-          {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+          {!props.staticEmpty ? headerContent : ""}
         </div>
       </header>
     </>
