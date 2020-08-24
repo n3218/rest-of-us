@@ -28,6 +28,7 @@ const Main = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("restOfUsToken")),
     flashMessages: [],
+    messageColor: "success",
     user: {
       token: localStorage.getItem("restOfUsToken"),
       username: localStorage.getItem("restOfUsUsername"),
@@ -45,6 +46,9 @@ const Main = () => {
         return
       case "logout":
         draft.loggedIn = false
+        return
+      case "messageColor":
+        draft.messageColor = action.value
         return
       case "flashMessage":
         draft.flashMessages.push(action.value)
@@ -91,6 +95,7 @@ const Main = () => {
           const response = await Axios.post("/checkToken", { token: state.user.token }, { cancelToken: searchRequest.token })
           if (!response.data) {
             dispatch({ type: "logout" })
+            dispatch({ type: "messageColor", value: "danger" })
             dispatch({ type: "flashMessage", value: "Your session has expired. Please login again." })
           }
         } catch (err) {
@@ -107,7 +112,7 @@ const Main = () => {
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <Router>
-          <FlashMessage flashMessages={state.flashMessages} />
+          <FlashMessage messageColor={state.messageColor} flashMessages={state.flashMessages} />
           <Header />
           <Suspense fallback={<Loader />}>
             <Switch>

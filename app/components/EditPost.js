@@ -23,11 +23,11 @@ const EditPost = props => {
       hasErrors: false,
       message: ""
     },
-    ifFetching: true,
+    isFetching: true,
     isSeving: false,
     id: useParams().id,
     sendCount: 0,
-    notFound: false
+    notFound: null
   }
 
   const editPostReducer = (draft, action) => {
@@ -72,6 +72,7 @@ const EditPost = props => {
         }
         return
       case "notFound":
+        draft.isFetching = false
         draft.notFound = true
         return
     }
@@ -84,9 +85,11 @@ const EditPost = props => {
     const fetchPost = async () => {
       try {
         const response = await Axios.get(`/post/${state.id}`, { cancelToken: myRequest.token })
+
         if (response.data) {
           dispatch({ type: "fetchComplete", value: response.data })
           if (appState.user.username != response.data.author.username) {
+            appDispatch({ type: "messageColor", value: "warning" })
             appDispatch({ type: "flashMessage", value: "You do not have permission to edit this post." })
             //redirect to homepage
             props.history.push("/")
@@ -128,8 +131,11 @@ const EditPost = props => {
     }
   }, [state.sendCount])
 
-  if (state.notFound) {
-    return <NotFound />
+  const submitHandler = e => {
+    e.preventDefault()
+    dispatch({ type: "titleRules", value: state.title.value })
+    dispatch({ type: "bodyRules", value: state.body.value })
+    dispatch({ type: "submitUpdates" })
   }
 
   if (state.isFetching)
@@ -138,13 +144,7 @@ const EditPost = props => {
         <Loader />
       </Page>
     )
-
-  const submitHandler = e => {
-    e.preventDefault()
-    dispatch({ type: "titleRules", value: state.title.value })
-    dispatch({ type: "bodyRules", value: state.body.value })
-    dispatch({ type: "submitUpdates" })
-  }
+  if (state.notFound) return <NotFound />
 
   return (
     <Page title="Edit Post">

@@ -68,9 +68,11 @@ const CreatePost = () => {
         try {
           const response = await Axios.post("/create-post", { title: state.title.value, body: state.body.value, token: appState.user.token }, { cancelToken: createPostRequest.token })
           dispatch({ type: "wasSuccessfull", value: response.data })
+          appDispatch({ type: "messageColor", value: "success" })
           appDispatch({ type: "flashMessage", value: "Your post was successfully created!" })
         } catch (err) {
           console.log(err)
+          appDispatch({ type: "messageColor", value: "danger" })
           appDispatch({ type: "flashMessage", value: err })
         }
       }

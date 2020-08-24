@@ -7,6 +7,7 @@ import DispatchContext from "../DispatchContext"
 
 const HomeGuest = () => {
   const appDispatch = useContext(DispatchContext)
+
   const initialState = {
     username: {
       value: "",
@@ -170,6 +171,7 @@ const HomeGuest = () => {
         try {
           const response = await Axios.post("/register", { username: state.username.value, email: state.email.value, password: state.password.value }, { cancelToken: searchRequest.token })
           appDispatch({ type: "login", data: response.data })
+          appDispatch({ type: "messageColor", value: "success" })
           appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account!" })
         } catch (err) {
           console.log("There was a problem or request was cancelled")

@@ -6,6 +6,8 @@ import ListOfPosts from "./ListOfPosts"
 import ListOfPersons from "./ListOfPersons"
 import StateContext from "../StateContext"
 import { useImmer } from "use-immer"
+import NotFound from "./NotFound"
+import Loader from "./Loader"
 
 const Profile = () => {
   const { username } = useParams()
@@ -20,7 +22,9 @@ const Profile = () => {
       profileAvatar: "https://gravatar.com/avatar/placeholder?s=128",
       isFollowing: false,
       counts: { postCount: "", followerCount: "", followingCount: "" }
-    }
+    },
+    isLoading: true,
+    notFound: null
   })
 
   useEffect(() => {
@@ -28,9 +32,18 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const response = await Axios.post(`/profile/${username}`, { token: appState.user.token }, { cancelToken: myRequest.token })
-        setState(draft => {
-          draft.profileData = response.data
-        })
+        if (response.data) {
+          setState(draft => {
+            draft.profileData = response.data
+            draft.notFound = false
+            draft.isLoading = false
+          })
+        } else {
+          setState(draft => {
+            draft.isLoading = false
+            draft.notFound = true
+          })
+        }
       } catch (err) {
         console.log(err)
         console.log("...Or request was cancelled")
@@ -107,6 +120,14 @@ const Profile = () => {
     })
   }
 
+  if (state.isLoading)
+    return (
+      <Page title="...">
+        <Loader />
+      </Page>
+    )
+  if (state.notFound) return <NotFound />
+
   return (
     <Page title="Profile">
       <h2>
@@ -137,15 +158,15 @@ const Profile = () => {
       <Switch>
         <Route exact path="/profile/:username">
           <ListOfPosts />
-          {profileData.counts.postCount === 0 && appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not have any posts yet." : "This user does not have any posts yet."}
+          <div className="lead text-muted text-center">{profileData.counts.postCount === 0 && (appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not have any posts yet." : "This user does not have any posts yet.")}</div>
         </Route>
         <Route path="/profile/:username/followers">
           <ListOfPersons who="followers" />
-          {profileData.counts.followerCount === 0 && appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not have any followers yet." : "This user does not have any followers yet."}
+          <div className="lead text-muted text-center">{profileData.counts.followerCount === 0 && (appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not have any followers yet." : "This user does not have any followers yet.  Be nice and start follow him!")}</div>
         </Route>
         <Route path="/profile/:username/following">
           <ListOfPersons who="following" />
-          {profileData.counts.followingCount === 0 && appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not follow anyone yet." : "This user does not follow anyone yet."}
+          <div className="lead text-muted text-center">{profileData.counts.followingCount === 0 && (appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not follow anyone yet." : "This user does not follow anyone yet.")}</div>
         </Route>
       </Switch>
     </Page>

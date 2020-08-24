@@ -57,6 +57,7 @@ const Post = props => {
       try {
         const response = await Axios.delete(`/post/${id}`, { data: { token: appState.user.token } })
         if (response.data == "Success") {
+          appDispatch({ type: "messageColor", value: "success" })
           appDispatch({ type: "flashMessage", value: "Your post was successfully deleted." })
           props.history.push(`/profile/${appState.user.username}`)
         }

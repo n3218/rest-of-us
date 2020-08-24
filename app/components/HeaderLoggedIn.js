@@ -10,6 +10,7 @@ const HeaderLoggedIn = () => {
   const appState = useContext(StateContext)
   const logoutHandler = () => {
     appDispatch({ type: "logout" })
+    appDispatch({ type: "messageColor", value: "warning" })
     appDispatch({ type: "flashMessage", value: "You have logged out." })
   }
 

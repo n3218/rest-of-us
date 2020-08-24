@@ -33,9 +33,7 @@ const Home = () => {
     }
   }, [])
 
-  if (state.isLoading) {
-    return <Loader />
-  }
+  if (state.isLoading) return <Loader />
 
   return (
     <Page title="The Latest From Those You Follow">

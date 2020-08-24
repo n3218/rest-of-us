@@ -1,11 +1,11 @@
 import React from "react"
 
-const FlashMessage = ({ flashMessages }) => {
+const FlashMessage = ({ flashMessages, messageColor }) => {
   return (
     <div className="floating-alerts">
       {flashMessages.map((msg, index) => {
         return (
-          <div key={index} className="alert alert-success text-center floating-alert shadow-sm">
+          <div key={index} className={"alert text-center floating-alert shadow-sm alert-" + messageColor}>
             {msg}
           </div>
         )
