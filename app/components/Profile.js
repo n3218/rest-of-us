@@ -32,7 +32,7 @@ const Profile = () => {
           draft.profileData = response.data
         })
       } catch (err) {
-        console.log(err.response.data)
+        console.log(err)
         console.log("...Or request was cancelled")
       }
     }
@@ -95,6 +95,7 @@ const Profile = () => {
   }, [state.stopFollowingRequestCount])
 
   const { profileData } = state
+
   const startFollowing = () => {
     setState(draft => {
       draft.startFollowingRequestCount++
@@ -105,6 +106,7 @@ const Profile = () => {
       draft.stopFollowingRequestCount++
     })
   }
+
   return (
     <Page title="Profile">
       <h2>
@@ -135,16 +137,21 @@ const Profile = () => {
       <Switch>
         <Route exact path="/profile/:username">
           <ListOfPosts />
+          {profileData.counts.postCount === 0 && appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not have any posts yet." : "This user does not have any posts yet."}
         </Route>
         <Route path="/profile/:username/followers">
           <ListOfPersons who="followers" />
+          {profileData.counts.followerCount === 0 && appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not have any followers yet." : "This user does not have any followers yet."}
         </Route>
         <Route path="/profile/:username/following">
           <ListOfPersons who="following" />
+          {profileData.counts.followingCount === 0 && appState.loggedIn && appState.user.username === state.profileData.profileUsername ? "You do not follow anyone yet." : "This user does not follow anyone yet."}
         </Route>
       </Switch>
     </Page>
   )
 }
+
+const zeroMessageHandler = () => {}
 
 export default Profile

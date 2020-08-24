@@ -36,7 +36,7 @@ const Home = () => {
   if (state.isLoading) {
     return <Loader />
   }
-  console.log(state.feed.length)
+
   return (
     <Page title="The Latest From Those You Follow">
       {state.feed.length == 0 ? (

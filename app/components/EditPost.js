@@ -112,9 +112,10 @@ const EditPost = props => {
       const fetchPost = async () => {
         try {
           const response = await Axios.post(`/post/${state.id}/edit`, { title: state.title.value, body: state.body.value, token: appState.user.token }, { cancelToken: myRequest.token })
-          console.log(response)
           dispatch({ type: "saveRequestFinished" })
           appDispatch({ type: "flashMessage", value: "Your post was successfully updated!" })
+          //redirect to postPage
+          props.history.push(`/post/${state.id}`)
         } catch (err) {
           console.log(err.response.data)
           console.log("...Or request was cancelled")
