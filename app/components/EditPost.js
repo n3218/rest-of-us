@@ -116,6 +116,7 @@ const EditPost = props => {
         try {
           const response = await Axios.post(`/post/${state.id}/edit`, { title: state.title.value, body: state.body.value, token: appState.user.token }, { cancelToken: myRequest.token })
           dispatch({ type: "saveRequestFinished" })
+          appDispatch({ type: "messageColor", value: "success" })
           appDispatch({ type: "flashMessage", value: "Your post was successfully updated!" })
           //redirect to postPage
           props.history.push(`/post/${state.id}`)

@@ -14,6 +14,7 @@ const HeaderLoggedOut = () => {
         const response = await Axios.post("/login", { username, password })
         if (response.data) {
           appDispatch({ type: "login", data: response.data })
+          appDispatch({ type: "messageColor", value: "success" })
           appDispatch({ type: "flashMessage", value: "You have successfully logged in." })
           console.log(username + " user successfully logged in")
         } else {
